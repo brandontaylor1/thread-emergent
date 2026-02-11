@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Large media files
-videos/*.mp4
+# videos/*.mp4
