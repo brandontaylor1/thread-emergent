@@ -2,13 +2,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+ }
 
 :root {
   --primary-color: #0a0a0a !important;
   --secondary-color: #ffffff !important;
-  --menu-button-color: #ff620c !important;
-  --extra-color: #ffe284;
+ --menu-button-color: #ff620c !important;
+ --extra-color: #ffe284;
 }
 
 @font-face {
@@ -188,7 +188,7 @@ nav button i.rotated {
 
 #menu-list li a {
   text-decoration: none;
-  color: #fff; /* Text color of menu items */
+  color: #fff;
 }
 
 #menu-list li a:hover {
@@ -204,7 +204,7 @@ nav button i.rotated {
   min-height: 100%;
   width: auto;
   height: 100vh;
-  z-index: -2; /* Ensure the video stays in the background */
+  z-index: -2;
   object-fit: cover;
 }
 
@@ -278,6 +278,28 @@ nav button i.rotated {
   margin-bottom: 3rem;
 }
 
+/* Better link styling for Learn More button */
+.right-container a {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: var(--menu-button-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  width: fit-content;
+}
+
+.right-container a:hover {
+  background: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 98, 12, 0.3);
+}
+
 .main-grid {
   display: grid;
   grid-template-columns: .5fr 1fr;
@@ -286,14 +308,7 @@ nav button i.rotated {
   width: 100%;
   padding: 5rem 0rem 0rem 0rem;
   height: 150vh;
-
 }
-
-/* .top-left-container {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 0;
-} */
 
 .top-left-container h3 {
   font-weight: 300;
@@ -314,14 +329,8 @@ nav button i.rotated {
 }
 
 .bottom-left-container {
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0; */
   position: sticky;
   top: 20vh;
-
 }
 
 .link-content {
@@ -370,14 +379,16 @@ nav button i.rotated {
   color: lightgray;
   font-family: 'AironeFont';
   text-align: left;
+  transition: color 0.3s ease;
 }
 
 .link-container li:hover {
-  color:darkgray;
+  color: darkgray;
 }
 
-.link-container li:active {
-  color: var(--primary-color);
+.link-container li:active,
+.link-container li.active {
+  color: var(--primary-color) !important;
 }
 
 .recent-work h2 {
@@ -481,7 +492,7 @@ footer {
   line-height: 1.5;
 }
 
-/* Initial states for animations */
+/* Initial states for animations - will animate in via JS */
 .about-grid .left-container h3,
 .about-grid .right-container h2,
 .about-grid .right-container h3,
@@ -497,6 +508,24 @@ footer {
 .blog-card,
 .footer-grid .footer {
   opacity: 0;
+}
+
+/* Fallback for when JS is disabled or fails to load */
+.no-js .about-grid .left-container h3,
+.no-js .about-grid .right-container h2,
+.no-js .about-grid .right-container h3,
+.no-js .about-grid .right-container a,
+.no-js .main-grid .top-left-container h3,
+.no-js .main-grid .top-right-container h4,
+.no-js .link-container li,
+.no-js .link-content img,
+.no-js .link-content p,
+.no-js .recent-work h2,
+.no-js .work-card,
+.no-js .blog h2,
+.no-js .blog-card,
+.no-js .footer-grid .footer {
+  opacity: 1;
 }
 
 /* Mobile Responsive Styles */
@@ -725,7 +754,7 @@ footer {
   .link-container li:hover,
   .link-container li.active {
     background: var(--menu-button-color);
-    color: white;
+    color: white !important;
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(255, 98, 12, 0.3);
   }
@@ -868,7 +897,9 @@ footer {
     display: flex;
     align-items: center;
   }
-  
+
+on: file_editor view /app/thread-files/style.css
+rvation: /app/thread-files/style.css:
   /* Better mobile menu positioning */
   #menu-list {
     right: 0.5rem;

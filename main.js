@@ -1,19 +1,16 @@
-import './style.css'
-import { inView, animate, stagger } from 'motion'
+import './style.css';
 
 
-const menuButton = document.querySelector('#menu-button')
-const arrow = document.querySelector('#arrow')
+// DOM Elements
+const menuButton = document.querySelector('#menu-button');
+const arrow = document.querySelector('#arrow');
 const menuList = document.getElementById('menu-list');
 const buttons = document.querySelectorAll("button");
 const links = document.querySelectorAll("a");
-const linkContainerLinks = document.querySelectorAll(".link-container li")
-const linkContentInfoLinks = document.querySelectorAll(".link-content")
+const linkContainerLinks = document.querySelectorAll(".link-container li");
+const linkContentInfoLinks = document.querySelectorAll(".link-content");
 
-
-
-
-// Modern scroll progress bar
+// Scroll progress bar
 function updateScrollProgress() {
   const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
   const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -24,23 +21,30 @@ function updateScrollProgress() {
   }
 }
 
-// Use modern event listener
 window.addEventListener('scroll', updateScrollProgress, { passive: true });
 
+// Menu toggle
 menuButton.addEventListener('click', () => {
   const isVisible = menuList.classList.contains('show');
   
   if (isVisible) {
-    // Hide menu
     menuList.classList.remove('show');
     arrow.classList.remove('rotated');
   } else {
-    // Show menu
     menuList.classList.add('show');
     arrow.classList.add('rotated');
   }
-})
+});
 
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!menuButton.contains(e.target) && !menuList.contains(e.target)) {
+    menuList.classList.remove('show');
+    arrow.classList.remove('rotated');
+  }
+});
+
+// Initialize on DOM load
 document.addEventListener("DOMContentLoaded", function() {
   // Check if device supports touch (mobile/tablet)
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -50,8 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const cursor = document.querySelector(".custom-cursor");
 
     function handleMouseMove(e) {
-        cursor.style.left = e.pageX + "px";
-        cursor.style.top = e.pageY + "px";
+      cursor.style.left = e.pageX + "px";
+      cursor.style.top = e.pageY + "px";
     }
 
     function handleHover(e) {
@@ -78,31 +82,27 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
 
-    // Add event listener for mousemove event
     document.addEventListener("mousemove", handleMouseMove);
 
-    // For clickable elements (buttons, links, menu items)
     buttons.forEach(button => {
-        button.addEventListener("mouseover", handleHover);
-        button.addEventListener("mouseout", handleHover);
+      button.addEventListener("mouseover", handleHover);
+      button.addEventListener("mouseout", handleHover);
     });
 
     links.forEach(link => {
-        link.addEventListener("mouseover", handleHover);
-        link.addEventListener("mouseout", handleHover);
+      link.addEventListener("mouseover", handleHover);
+      link.addEventListener("mouseout", handleHover);
     });
 
-    // For discipline menu items
     linkContainerLinks.forEach(item => {
-        item.addEventListener("mouseover", handleHover);
-        item.addEventListener("mouseout", handleHover);
+      item.addEventListener("mouseover", handleHover);
+      item.addEventListener("mouseout", handleHover);
     });
 
-    // For text elements that should show small cursor
     const textElements = document.querySelectorAll('h1, h2, h3, h4, p');
     textElements.forEach(element => {
-        element.addEventListener("mouseover", handleTextHover);
-        element.addEventListener("mouseout", handleTextHover);
+      element.addEventListener("mouseover", handleTextHover);
+      element.addEventListener("mouseout", handleTextHover);
     });
   } else {
     // Hide custom cursor on touch devices
@@ -115,8 +115,9 @@ document.addEventListener("DOMContentLoaded", function() {
   const bigText = document.querySelector('.big-hero-text');
   const mainContentSection = document.querySelector('.main-content');
 
-  if (typeof gsap !== 'undefined') {
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
+    
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: mainContentSection,
@@ -132,19 +133,163 @@ document.addEventListener("DOMContentLoaded", function() {
       opacity: 0.8
     });
   }
+
+  // Motion One Animations (using global Motion object from CDN)
+  if (typeof Motion !== 'undefined') {
+    const { inView, animate, stagger } = Motion;
+
+    // About section animations
+    inView('.about-grid .left-container', () => {
+      animate('.about-grid .left-container h3', {
+        opacity: [0, 1],
+        x: [-50, 0]
+      }, {
+        duration: 0.8,
+        delay: stagger(0.2)
+      });
+    });
+
+    inView('.about-grid .right-container', () => {
+      animate('.about-grid .right-container h2', {
+        opacity: [0, 1],
+        y: [50, 0]
+      }, {
+        duration: 1,
+        delay: 0.3
+      });
+      
+      animate('.about-grid .right-container h3', {
+        opacity: [0, 1],
+        y: [30, 0]
+      }, {
+        duration: 0.8,
+        delay: 0.6
+      });
+      
+      animate('.about-grid .right-container a', {
+        opacity: [0, 1],
+        y: [20, 0]
+      }, {
+        duration: 0.6,
+        delay: 0.9
+      });
+    });
+
+    // Disciplines section animations
+    inView('.main-grid .top-left-container', () => {
+      animate('.main-grid .top-left-container h3', {
+        opacity: [0, 1],
+        x: [-50, 0]
+      }, {
+        duration: 0.8,
+        delay: 0.2
+      });
+    });
+
+    inView('.main-grid .top-right-container', () => {
+      animate('.main-grid .top-right-container h4', {
+        opacity: [0, 1],
+        y: [30, 0]
+      }, {
+        duration: 1,
+        delay: 0.3
+      });
+    });
+
+    inView('.link-container', () => {
+      animate('.link-container li', {
+        opacity: [0, 1],
+        x: [100, 0]
+      }, {
+        duration: 0.8,
+        delay: stagger(0.15)
+      });
+    });
+
+    inView('.bottom-left-container', () => {
+      animate('.bottom-left-container .link-content.active img', {
+        opacity: [0, 1],
+        scale: [0.9, 1]
+      }, {
+        duration: 0.8,
+        delay: 0.2
+      });
+      
+      animate('.bottom-left-container .link-content.active p', {
+        opacity: [0, 1],
+        y: [20, 0]
+      }, {
+        duration: 0.6,
+        delay: 0.5
+      });
+    });
+
+    // Recent work animations
+    inView('.recent-work h2', () => {
+      animate('.recent-work h2', {
+        opacity: [0, 1],
+        x: [-100, 0]
+      }, {
+        duration: 1,
+        delay: 0.2,
+      });
+    });
+
+    inView('.work-card', () => {
+      animate('.work-card', {
+        opacity: [0, 1],
+        y: [100, 0]
+      }, {
+        duration: 1,
+        delay: stagger(0.2)
+      });
+    });
+
+    // Blog section animations
+    inView('.blog h2', () => {
+      animate('.blog h2', {
+        opacity: [0, 1],
+        x: [100, 0]
+      }, {
+        duration: 1,
+        delay: 0.2
+      });
+    });
+
+    inView('.blog-card', () => {
+      animate('.blog-card', {
+        opacity: [0, 1],
+        y: [80, 0]
+      }, {
+        duration: 0.8,
+        delay: stagger(0.15)
+      });
+    });
+
+    // Footer animation
+    inView('.footer-grid', () => {
+      animate('.footer-grid .footer', {
+        opacity: [0, 1],
+        y: [-50, 0]
+      }, {
+        duration: 0.8,
+        delay: stagger(0.1)
+      });
+    });
+  }
 });
 
-
+// Discipline link switching
 linkContainerLinks.forEach((link, index) => {
   link.addEventListener('click', () => {
     // Remove active class from all links and content
     linkContainerLinks.forEach((l) => {
       l.classList.remove('active');
-    })
+    });
     linkContentInfoLinks.forEach((content) => {
       content.classList.remove('active');
       content.classList.add('hidden');
-    })
+    });
     
     // Add active class to clicked link and corresponding content
     link.classList.add('active');
@@ -160,147 +305,5 @@ linkContainerLinks.forEach((link, index) => {
         });
       }, 300);
     }
-  })
-})
-
-
-//ANIMATION - MOTION 
-
-// About section animations
-inView('.about-grid .left-container', () => {
-  animate('.about-grid .left-container h3', {
-    opacity: [0, 1],
-    translateX: [-50, 0]
-  }, {
-    duration: 0.8,
-    delay: stagger(0.2)
-  })
-})
-
-inView('.about-grid .right-container', () => {
-  animate('.about-grid .right-container h2', {
-    opacity: [0, 1],
-    translateY: [50, 0]
-  }, {
-    duration: 1,
-    delay: 0.3
-  })
-  
-  animate('.about-grid .right-container h3', {
-    opacity: [0, 1],
-    translateY: [30, 0]
-  }, {
-    duration: 0.8,
-    delay: 0.6
-  })
-  
-  animate('.about-grid .right-container a', {
-    opacity: [0, 1],
-    translateY: [20, 0]
-  }, {
-    duration: 0.6,
-    delay: 0.9
-  })
-})
-
-// Disciplines section animations
-inView('.main-grid .top-left-container', () => {
-  animate('.main-grid .top-left-container h3', {
-    opacity: [0, 1],
-    translateX: [-50, 0]
-  }, {
-    duration: 0.8,
-    delay: 0.2
-  })
-})
-
-inView('.main-grid .top-right-container', () => {
-  animate('.main-grid .top-right-container h4', {
-    opacity: [0, 1],
-    translateY: [30, 0]
-  }, {
-    duration: 1,
-    delay: 0.3
-  })
-})
-
-inView('.link-container', () => {
-  animate('.link-container li', {
-    opacity: [0, 1],
-    translateX: [100, 0]
-  }, {
-    duration: 0.8,
-    delay: stagger(0.15)
-  })
-})
-
-inView('.bottom-left-container', () => {
-  animate('.bottom-left-container .link-content.active img', {
-    opacity: [0, 1],
-    scale: [0.9, 1]
-  }, {
-    duration: 0.8,
-    delay: 0.2
-  })
-  
-  animate('.bottom-left-container .link-content.active p', {
-    opacity: [0, 1],
-    translateY: [20, 0]
-  }, {
-    duration: 0.6,
-    delay: 0.5
-  })
-})
-
-// Recent work animations
-inView('.recent-work h2', () => {
-  animate('.recent-work h2', {
-    opacity: [0, 1],
-    translateX: [-100, 0]
-  }, {
-    duration: 1,
-    delay: 0.2,
-  })
-})
-
-inView('.work-card', () => {
-  animate('.work-card', {
-    opacity: [0, 1],
-    translateY: [100, 0]
-  }, {
-    duration: 1,
-    delay: stagger(0.2)
-   })
-})
-
-// Blog section animations
-inView('.blog h2', () => {
-  animate('.blog h2', {
-    opacity: [0, 1],
-    translateX: [100, 0]
-  }, {
-    duration: 1,
-    delay: 0.2
-  })
-})
-
-inView('.blog-card', () => {
-  animate('.blog-card', {
-    opacity: [0, 1],
-    translateY: [80, 0]
-  }, {
-    duration: 0.8,
-    delay: stagger(0.15)
-  })
-})
-
-// Footer animation
-inView('.footer-grid', () => {
-  animate('.footer-grid .footer', {
-    opacity: [0, 1],
-    translateY: [-50, 0]
-  }, {
-    duration: 0.8,
-    delay: stagger(0.1)
-  })
-})
+  });
+});
