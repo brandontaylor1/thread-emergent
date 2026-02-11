@@ -898,8 +898,6 @@ footer {
     align-items: center;
   }
 
-on: file_editor view /app/thread-files/style.css
-rvation: /app/thread-files/style.css:
   /* Better mobile menu positioning */
   #menu-list {
     right: 0.5rem;
